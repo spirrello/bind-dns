@@ -5,7 +5,7 @@ IMAGE="jetbrains/teamcity-server:${VERSION}"
 docker pull $IMAGE
 
 exec docker run -it --name teamcity-server-instance  \
---name "teamcity-server"
+--name "teamcity-server" \
 --detach \
 -v datadir:/data/teamcity_server/datadir \
 -v logs:/opt/teamcity/logs  \
