@@ -1,0 +1,11 @@
+ lan. IN SOA {{ansible_hostname}}.lan. hostmaster.lan. (
+       2017081401 ; serial
+        8H ; refresh
+        4H ; retry
+        4W ; expire
+        1D ; minimum
+    )
+    lan. IN NS {{ansible_hostname}}.lan.
+    lan. IN MX 10 {{ansible_hostname}}.lan.
+    localhost    IN A 127.0.0.1
+    {{ansible_hostname}}    IN A {{ansible_default_ipv4}}

@@ -1,0 +1,120 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bind9
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: bind9
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bind9
+    spec:
+      priorityClassName: system-cluster-critical
+      volumes:
+        - name: bind9-cache
+          emptyDir: {}
+        - name: bind9-conf
+          configMap:
+            name: bind9-conf
+      imagePullSecrets:
+        - name: alloy-imagepullsecret
+      containers:
+      - name: bind9
+        image: spirrello/bind9:0.0.1
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /etc/bind
+          name: bind9-conf
+        - mountPath: /var/cache/bind
+          name: bind9-cache
+        ports:
+        - containerPort: 53
+          protocol: UDP
+        - containerPort: 53
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - nslookup google.com 127.0.0.1
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - nslookup google.com 127.0.0.1
+          initialDelaySeconds: 15
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  bind9-conf
+  namespace: kube-system
+data:
+  named.conf: |+
+    acl goodclients {
+            10.0.0.0/8;
+            172.16.0.0/12;
+            192.168.0.0/16;
+            localhost;
+            localnets;
+    };
+
+    options {
+            querylog yes;
+            directory "/var/cache/bind";
+
+            recursion yes;
+            allow-query { goodclients; };
+
+            forwarders {
+                    10.9.18.21;
+                    10.9.18.22;
+            };
+            forward only;
+
+            auth-nxdomain no;    #
+    };
+    logging {
+        channel querylog {
+                stderr;
+                severity debug 3;
+                print-time yes;
+        };
+    };
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bind9
+  namespace: kube-system
+spec:
+  externalTrafficPolicy: Local
+  selector:
+    app: bind9
+  ports:
+  - name: dns-udp
+    protocol: UDP
+    port: 53
+  type: LoadBalancer

@@ -1,0 +1,8 @@
+zone "lan" IN {
+            type master;
+            file "/etc/bind/db.lan";
+      };
+zone "{{reverse_subnet}}.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.rev.{{reverse_subnet}}.in-addr.arpa";
+    };
