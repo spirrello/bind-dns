@@ -25,8 +25,6 @@ spec:
         - name: bind9-conf
           configMap:
             name: bind9-conf
-      imagePullSecrets:
-        - name: alloy-imagepullsecret
       containers:
       - name: bind9
         image: spirrello/bind9:0.0.1
