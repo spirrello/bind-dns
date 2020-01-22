@@ -1,0 +1,61 @@
+---
+
+- name: log directory
+  file:
+    path: /var/log/bind/
+    state: directory
+    owner: bind
+    group: bind
+  tags:
+    - config
+
+
+- name: logrotation
+  template:
+    src: roles/configure/templates/cronjob-logrotation.j2
+    dest: /etc/logrotate.d/bind
+  tags:
+    - config
+
+
+- name: cron job for logrotation
+  template:
+    src: roles/configure/templates/cronjob-logrotation.j2
+    dest: /etc/cron.d/bind
+  tags:
+    - config
+
+- name: named.conf templates
+  template:
+    src: roles/configure/templates/{{item}}
+    dest: /etc/bind/{{item |regex_replace('.j2','') }}
+  with_items:
+    - "named.conf.local.j2"
+    - "named.conf.options.j2"
+    - "named.conf.log.j2"
+    - "db.bing.com.j2"
+  notify: "restart bind9"
+  tags:
+    - config
+
+
+- name: domain template
+  template:
+    src: roles/configure/templates/db.domain.j2
+    dest: /etc/bind/db.{{domain}}
+  with_items:
+    - "db.domain.j2"
+  notify: "restart bind9"
+  tags:
+    - config
+
+
+- name: reverse template
+  template:
+    src: roles/configure/templates/reverse.j2
+    dest: /etc/bind/db.rev.{{reverse_subnet}}.in-addr.arpa
+  with_items:
+    - "reverse.j2"
+  notify: "restart bind9"
+  tags:
+    - config

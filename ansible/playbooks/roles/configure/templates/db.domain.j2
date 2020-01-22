@@ -1,0 +1,13 @@
+$TTL 86400
+@  {{domain}}. IN SOA {{ansible_hostname}}.{{domain}}. hostmaster.{{domain}}. (
+2017081403 ; serial
+3600 ; refresh
+1800 ; retry
+604800 ; expire
+86400 ; minimum
+)
+{{domain}}. IN NS {{ansible_hostname}}.{{domain}}.
+{{domain}}. IN MX 10 {{ansible_hostname}}.{{domain}}.
+localhost               IN A 127.0.0.1
+{{ansible_hostname}}IN A {{ansible_default_ipv4.address}}
+router                  IN A {{ansible_default_ipv4.gateway}}

@@ -1,8 +1,14 @@
-zone "lan" IN {
+include "/etc/bind/named.conf.log";
+
+zone "{{domain}}" IN {
             type master;
             file "/etc/bind/db.lan";
-      };
+    };
 zone "{{reverse_subnet}}.in-addr.arpa" {
         type master;
         file "/etc/bind/db.rev.{{reverse_subnet}}.in-addr.arpa";
+    };
+zone "bing.com" IN {
+            type master;
+            file "/etc/bind/db.bing.com";
     };

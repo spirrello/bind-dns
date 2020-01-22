@@ -9,9 +9,21 @@
     - prep
     - apt
 
+
+- name: apt-get update
+  apt:
+    update_cache: yes
+  tags:
+    - prep
+    - apt
+
+
 - name: install prereq packages
   apt:
-    name: bind9, bind9utils, dnsutils
+    pkg:
+    - bind9
+    - bind9utils
+    - dnsutils
     state: present
     update_cache: yes
   tags:

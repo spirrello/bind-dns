@@ -1,0 +1,10 @@
+@ IN SOA {{ansible_hostname}}.{{domain}}. hostmaster.{{domain}}. (
+2017081403 ; serial
+3600 ; refresh
+1800 ; retry
+604800 ; expire
+86400 ; minimum
+)
+@  IN NS {{ansible_hostname}}.
+1  IN PTR {{ansible_hostname}}.{{domain}}.
+31 IN PTR {{ansible_hostname}}.{{domain}}.
