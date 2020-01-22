@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION=0.0.1
-IMAGE="registry.liaison.prod:443/k8s/bind9:${VERSION}"
+IMAGE="spirrello/bind9:${VERSION}"
 docker pull $IMAGE
 
 exec docker run -d --name bind9 -p 53:53 -p 53:53/udp \
