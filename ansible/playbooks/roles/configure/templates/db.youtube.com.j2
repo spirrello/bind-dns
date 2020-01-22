@@ -1,0 +1,18 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL    86400
+youtube.com.  86400       IN      SOA     ns1.youtube.com. host.youtube.com. (
+                             12         ; Serial
+                           3600         ; Refresh
+                           1800         ; Retry
+                         604800         ; Expire
+                         86400 )       ; Negative Cache TTL
+;
+youtube.com.    IN      NS       ns1.youtube.com.
+youtube.com.    14400   IN      A       216.239.38.120
+www.youtube.com.        IN CNAME       restrict.youtube.com
+m.youtube.com.      IN CNAME       restrict.youtube.com
+youtubei.googleapis.com.        IN CNAME       restrict.youtube.com
+youtube.googleapis.com.        IN CNAME        restrict.youtube.com
+www.youtube-nocookie.com.      IN CNAME       restrict.youtube.com

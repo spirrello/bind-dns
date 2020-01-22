@@ -3,15 +3,15 @@
 ;
 $TTL    86400
 bing.com.  86400       IN      SOA     ns1.bing.com. host.bing.com. (
-                              4         ; Serial
+                              8         ; Serial
                            3600         ; Refresh
                            1800         ; Retry
                          604800         ; Expire
                          86400 )       ; Negative Cache TTL
 ;
-ns1.bing.com.    14400   IN      A       204.79.197.220
-bing.com.    14400   IN      NS       ns1.bing.com.
+bing.com.    IN      NS       ns1.bing.com.
 bing.com.    14400   IN      A       204.79.197.220
+ns1.bing.com.    14400   IN      A       204.79.197.220
 www.bing.com.  14400 IN      A       204.79.197.220
 www2.bing.com. 14400 IN      A       204.79.197.220
 www3.bing.com.  14400  IN      A       204.79.197.220

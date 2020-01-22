@@ -25,6 +25,7 @@
   tags:
     - config
 
+
 - name: named.conf templates
   template:
     src: roles/configure/templates/{{item}}
@@ -33,7 +34,6 @@
     - "named.conf.local.j2"
     - "named.conf.options.j2"
     - "named.conf.log.j2"
-    - "db.bing.com.j2"
   notify: "restart bind9"
   tags:
     - config
@@ -45,6 +45,18 @@
     dest: /etc/bind/db.{{domain}}
   with_items:
     - "db.domain.j2"
+  notify: "restart bind9"
+  tags:
+    - config
+
+
+- name: misc domain templates
+  template:
+    src: roles/configure/templates/{{item}}
+    dest: /etc/bind/{{ item|regex_replace('.j2','') }}
+  with_items:
+    - "db.bing.com.j2"
+  #  - "db.youtube.com.j2"
   notify: "restart bind9"
   tags:
     - config
